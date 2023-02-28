@@ -25,7 +25,7 @@ public class IntList {
     }
 
     public int set(int index, int element) {
-        if (index < 0 || index > list.length) {
+        if (index < 0 || index >= list.length) {
             throw new IllegalArgumentException("Error. Verify your code.");
         }
         int previousValue = list[index];
@@ -39,27 +39,28 @@ public class IntList {
 
     public void add(int element) {
         int[] newList;
-        if (list.length != 0) {
             newList = new int[list.length + 1];
             System.arraycopy(list, 0, newList, 0, list.length);
             newList[list.length] = element;
             list = newList;
-        }
     }
 
     public int remove(int index) {
         if (index < 0 || index >= list.length) {
             throw new IllegalArgumentException("Error. Verify your code.");
         }
-        int[] newList = list.clone();
-        list = new int[newList.length - 1];
+        int[] newList = new int[list.length - 1];
         int element = 0;
-        for (int i = 0; i < newList.length; i++) {
-            if (index == i) {
-                element = newList[i];
+        int k = 0;
+        for (int i = 0; i < list.length; i++) {
+            if (i != index) {
+                newList[k] = list[i];
+                k++;
+            } else {
+                element = list[i];
             }
-            list = newList;
         }
+        list = newList;
         return element;
     }
 
@@ -74,17 +75,10 @@ public class IntList {
     }
 
     public IntList subList(int startIndexInclusive) {
-        if (startIndexInclusive < 0 ||
-                startIndexInclusive > list.length) {
-            throw new IllegalArgumentException("Error. Inadmissible value of index.");
-        }
         return subList(startIndexInclusive, list.length);
     }
 
     public int lastIndexOf(int element) {
-        if (list.length == 0) {
-            throw new IllegalArgumentException("Nothing to search.");
-        }
         for (int i = list.length - 1; i >= 0; i--) {
             if (list[i] == element) {
                 return i;
@@ -94,9 +88,6 @@ public class IntList {
     }
 
     public void sort() {
-        if (list.length == 0) {
-            throw new IllegalArgumentException("Error. Inadmissible size of array");
-        }
         for (int i = 0; i < list.length - 1; i++) {
             for (int j = 0; j < list.length - 1 - i; j++) {
                 if (list[j + 1] < list[j]) {
